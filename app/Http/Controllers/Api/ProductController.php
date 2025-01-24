@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Product;
+
 class ProductController extends Controller
 {
     /**
@@ -12,17 +14,7 @@ class ProductController extends Controller
      */public function index()
     {
         $products = Product::paginate(12);
-        return response()->json([
-            'products' => $products->items(),
-            'pagination' => [
-                'total' => $products->total(),
-                'per_page' => $products->perPage(),
-                'current_page' => $products->currentPage(),
-                'last_page' => $products->lastPage(),
-                'from' => $products->firstItem(),
-                'to' => $products->lastItem(),
-            ],
-        ]);
+        return response()->json($products);
     }
 
     /**

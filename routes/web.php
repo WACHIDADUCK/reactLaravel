@@ -7,10 +7,5 @@ Route::get('/', function () {
 });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
-
-Route::get('/api/products', [App\Http\Controllers\api\ProductController::class, 'index'])->name('products.index');
