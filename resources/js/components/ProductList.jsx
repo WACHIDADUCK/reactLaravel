@@ -11,13 +11,13 @@ const Main = () => {
         // Función para obtener los productos desde el endpoint
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('/api/products', {withCredentials: true});
+                const response = await axios.get('/api/products', { withCredentials: true });
                 setProducts(response.data.data); // Asumiendo que los datos están en response.data.data
                 setLoading(false);
                 if (response.redirected) {
                     window.location.href = response.url;
                     return;
-                    }
+                }
             } catch (err) {
                 setError(err.message);
                 setLoading(false);
@@ -26,6 +26,23 @@ const Main = () => {
 
         fetchProducts();
     }, []); // El array vacío como segundo argumento asegura que esto se ejecute solo una vez
+
+    const deleteProduct = async (productId) => {
+        if (!window.confirm("¿Estás seguro de que quieres eliminar este producto?")) return;
+
+        try {
+            await axios.get("/sanctum/csrf-cookie");
+
+            await axios.delete(`/api/products/${productId}`, { withCredentials: true });
+
+            alert("Producto eliminado correctamente");
+            setProducts(products.filter(product => product.id !== productId));
+        } catch (error) {
+            console.error("Error eliminando el producto:", error);
+        }
+    };
+
+    console.log(products);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -41,6 +58,8 @@ const Main = () => {
                         <p>{product.description}</p>
                         <p>Price: ${product.price}</p>
                         <p>Quantity: {product.quantity}</p>
+                        <p>Created by user: {product.user_id}</p>
+                        <button onClick={() => deleteProduct(product.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
