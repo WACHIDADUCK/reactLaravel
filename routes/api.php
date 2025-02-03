@@ -9,4 +9,4 @@ Route::get('/user', function (Request $request) {
 
 
 Route::get('/products', [App\Http\Controllers\api\ProductController::class, 'index'])
-->name('products.index');
+->name('products.index')->middleware('auth:sanctum');

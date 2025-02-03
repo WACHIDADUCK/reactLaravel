@@ -15,7 +15,7 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */public function index()
     {
-        $products = Product::paginate(12);
+        $products = Product::all();
         // return response()->json($products);
 
         return ProductResource::collection($products);
